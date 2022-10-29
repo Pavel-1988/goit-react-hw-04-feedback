@@ -28,13 +28,12 @@ export default function App2() {
     }
   };
 
- const countTotalFeedback = () => {
-
+  const countTotalFeedback = () => {
     return good + neutral + bad;
   }
-  const countPositiveFeedbackPercentage = () => {
 
-     const total = good + neutral + bad;
+  const countPositiveFeedbackPercentage = () => {
+    const total = good + neutral + bad;
     return Math.round((good * 100) / total) || 0 ;
   }
 
