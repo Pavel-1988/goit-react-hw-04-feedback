@@ -1,48 +1,53 @@
-import React from 'react'
+import React from 'react';
+import { useState } from "react";
 import { Section } from './Section/Section'
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions'
 import { Statistics } from './Statistics/Statistics'
 import { Notification } from './Notification/Notification'
 
+export default function App2() {
+
+  const [good, setGood] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [neutral, setNeutral] = useState(0);
 
 
-export class App extends React.Component  {
-  state = {
-  good: 0,
-  neutral: 0,
-  bad: 0
-  }
-
-
-  
-  onFeedback = option => {
-    this.setState(prevState => ({
-      [option]: prevState[option] + 1,
-    }));
+  const onFeedback = (option) => {
+    switch (option) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      default:
+        return;
+    }
   };
 
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
+ const countTotalFeedback = () => {
+
     return good + neutral + bad;
   }
+  const countPositiveFeedbackPercentage = () => {
 
-  countPositiveFeedbackPercentage = () => {
-    const { good, neutral, bad } = this.state;
      const total = good + neutral + bad;
     return Math.round((good * 100) / total) || 0 ;
   }
-  
-  render() {
-    const { good, neutral, bad } = this.state;
-    const total = this.countTotalFeedback();
-    const percentage = this.countPositiveFeedbackPercentage();
-    const options = Object.keys(this.state);
-    return (
+
+    const total = countTotalFeedback();
+    const percentage = countPositiveFeedbackPercentage();
+    const options = Object.keys({ good, bad, neutral });
+
+   return (
       <>
         <Section title={"Please leave feedback"}>
           <FeedbackOptions
             options={options}
-            onLeaveFeedback={this.onFeedback}
+            onLeaveFeedback={onFeedback}
           />
         </Section>
         <Section title={"Statistics"}>
@@ -60,6 +65,5 @@ export class App extends React.Component  {
         </Section>
       </>
     )
-  }
 
 }
